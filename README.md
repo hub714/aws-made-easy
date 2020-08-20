@@ -1,6 +1,6 @@
 # Well-Architected Guidance for Services
 
-The purpose of this repo is to provide specific guidance on commonly used services at <customer>. The recommendations serve as a baseline and should be tailored by the individual customer teams.
+The purpose of this repo is to provide specific guidance on commonly used services at [customer]. The recommendations serve as a baseline and should be tailored by the individual customer teams.
 
 The general structure is as follows:
 
@@ -28,3 +28,8 @@ The general structure is as follows:
 - Scaling metrics/monitoring
 
 ## Teams already using this service
+
+***
+
+To add a new service, copy the template folder and create a new service:
+> cp -R template service
