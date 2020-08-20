@@ -30,6 +30,6 @@ The general structure is as follows:
 ## Teams already using this service
 
 ***
-
+## Adding additional services
 To add a new service, copy the template folder and create a new service:
 > cp -R template service
