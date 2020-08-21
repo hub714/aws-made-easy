@@ -11,7 +11,7 @@ The general structure is as follows:
   - At rest
   - In transit
 - FIPS endpoints?
-- Prisma rules affecting this service
+- Corporate rules affecting this service
 - Default least privilege IAM permissions
 ### Reliability
 - Limits (will link to documentation)
@@ -33,3 +33,10 @@ The general structure is as follows:
 ## Adding additional services
 To add a new service, copy the template folder and create a new service:
 > cp -R template service
+
+## Initial target services
+- EC2
+- S3
+- Kinesis
+- SQS
+- SNS
