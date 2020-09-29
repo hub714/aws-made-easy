@@ -67,15 +67,24 @@
 ## Performance
 
 - How can you operate with this service at scale?
+  - In order to avoid hitting the limit of 5 GetRecords calls per second, you should poll each shard at an interval of one call per second per application. The KCL polling setting is set to 1 second by default, as this is considered a best practice.
+  - Utilize enhanced fan-out to support multiple consumers of a stream with an increased dedicated throughput of 2 MB of data per second per shard. Consumers that use the enhanced fan-out feature do not have to contend with other consumers currently receiving data from a stream. Some additional configuration is required to enable and manage this feature.
 
 ## Cost Optimization
+
 - What are some of the tradeoffs for performance vs cost
+  - Be aware that splitting a shard will increase the number of shards in your stream and therefore increase the data capacity of the stream. However, the trade off is that since you are charged on a per-shard basis, conducting a split of a shard will also increase the cost of your stream. On the other hand, when you merge shards together, this action reduces the number of shards in your stream which also decreases the data capacity and cost of the stream. See metrics/monitoring for information on metrics that can signal when a shard split or a merge might be needed.
   - Once a KDS application has finished processing data, you should terminate the EC2 instance to avoid additional costs.
 
 ## Operations
+
 - Minimum monitoring and specific metrics to have alarms on
-  - Monitor the GetRecords.IteratorAgeMilliseconds CloudWatch metric to alert if applications are keeping up with the data coming in.
+  - Enable Basic monitoring to analyze stream-level metrics which are sent every minute automatically at no charge.
+  - Enable CloudTrail to monitor on-host CPU metrics and the amount of memory consumed. Additionally, capturing agent error counters will serve to identify resource usage for your data producers, which can provide insights into possible configuration or host errors.
   
 - Scaling metrics/monitoring
+  - Enable Enhanced monitoring to analyze shard-level metrics. The enhanced metrics can be singularly selected and include: incoming and outgoing bytes and records, write and read throughput exceptions, the age of the iterator in milliseconds. Or you can also enable 'ALL' of these metrics.
+  - Monitor the IncomingBytes and OutgoingBytes CloudWatch metrics to track the shard usage and utilize the results to compare to the number of shards in the stream and setup an alarm when reaching a threshold.
+  - Monitor the GetRecords.IteratorAgeMilliseconds CloudWatch metric to alert you if applications are keeping up with the data coming in and setup an alarm.
 
 ## Teams already using this service
