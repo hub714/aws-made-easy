@@ -15,20 +15,27 @@
   - In transit
     - Utilize Kinesis VPC endpoints to prevent traffic from leaving the Amazon network between your VPC and your KDS implementation.
       - Determine the granularity of your VPC policy for your KDS which can be, for example:
-        - Read-only access
-        - Access restricted to a specific Kinesis Data Stream
-        - Access restricted to a specific Kinesis Data Stream from only a specific VPC endpoint
+        - Read-only access.
+        - Access restricted to a specific Kinesis Data Stream.
+        - Access restricted to a specific Kinesis Data Stream from only a specific VPC endpoint.
       - Create IAM policies to determine what groups/users are allowed to do or not on a specific Kinesis Data Stream. The policies should follow the least privilege principle, allowing only read, write or both for a specific stream, a set of streams or all streams in an account (e.g. Administrators may have access to all streams in an account, depending on your policy).
       - Use IAM roles with these policies to manage temporary credentials for producer and client applications in order to access KDS.
     - It is recommended that clients consuming KDS support TLS 1.2 or later.
       - Clients must also support cipher suites with Perfect Forward Secrecy (PFS) such as:
-        - Ephemeral Diffie-Helman (DHE)
-        - Elliptic Curve Ephemeral Diffie-Hellman (ECDHE)
+        - Ephemeral Diffie-Helman (DHE).
+        - Elliptic Curve Ephemeral Diffie-Hellman (ECDHE).
     - Requests must also be signed with the access key id and secret access key for the IAM principal making the call
     - AWS Security Token Service is also a supported option that can be used to generate temporary user security credentials that in turn can be used to sign requests.
-- FIPS endpoints?
+- FIPS endpoints for Kinesis Data Streams:
+  - kinesis-fips.us-east-1.amazonaws.com
+  - kinesis-fips.us-east-2.amazonaws.com
+  - kinesis-fips.us-west-1.amazonaws.com
+  - kinesis-fips.us-west-2.amazonaws.com
+  - *For the most up to date FIPS endpoints information, see the official docs: <https://aws.amazon.com/compliance/fips/>
 - Prisma rules affecting this service
 - Default least privilege IAM permissions
+- For examples of policies that can be applied to Kinesis Data Streams see the following documentation:
+  - <https://docs.aws.amazon.com/streams/latest/dev/controlling-access.html#kinesis-using-iam-examples>
 
 ## Reliability
 
@@ -52,7 +59,7 @@
   
   - Handling startups
     - Change the default behavior of the record processors by setting the initialPositionInStream to "TRIM_HORIZON" as this will allow the application to always read from the beginning of the stream, thus allowing your application to process the older data in the stream first.
-    - Use the Kinesis Client Library (KCL), to handle scenarios where data may be processing a faster rate than the allowed limit, since the KCL will handle for you any throttling or exceptions that may occur.
+    - Use the Kinesis Client Library (KCL), to handle scenarios where data may be processing at a faster rate than the allowed limit, since the KCL will handle for you any throttling or exceptions that may occur.
 
 - High Availability considerations (application and infrastructure)
   - Utilize Availability Zones to distribute your instances across physically redundant data centers.
